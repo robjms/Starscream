@@ -73,13 +73,17 @@ public class FoundationHTTPServerHandler: HTTPServerHandler {
         if !CFHTTPMessageIsHeaderComplete(response) {
             return false //not enough data, wait for more
         }
-        if let method = CFHTTPMessageCopyRequestMethod(response)?.takeRetainedValue() {
-            if (method as NSString) != getVerb {
-                delegate?.didReceive(event: .failure(HTTPUpgradeError.invalidData))
-                return true
-            }
-        }
-        
+
+
+       if let method = CFHTTPMessageCopyRequestMethod(response)?.takeRetainedValue() as NSString? {
+    if method != getVerb {
+        delegate?.didReceive(event: .failure(HTTPUpgradeError.invalidData))
+        return true
+    }
+}       
+
+
+
         if let cfHeaders = CFHTTPMessageCopyAllHeaderFields(response) {
             let nsHeaders = cfHeaders.takeRetainedValue() as NSDictionary
             var headers = [String: String]()
