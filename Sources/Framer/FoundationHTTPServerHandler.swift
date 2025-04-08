@@ -75,13 +75,12 @@ public class FoundationHTTPServerHandler: HTTPServerHandler {
         }
 
 
-       if let method = CFHTTPMessageCopyRequestMethod(response)?.takeRetainedValue() as NSString? {
-    if method != getVerb {
-        delegate?.didReceive(event: .failure(HTTPUpgradeError.invalidData))
-        return true
-    }
-}       
-
+        if let method = CFHTTPMessageCopyRequestMethod(response)?.takeRetainedValue() as NSString? {
+            if method != getVerb {
+                delegate?.didReceive(event: .failure(HTTPUpgradeError.invalidData))
+                return true
+            }
+        }
 
 
         if let cfHeaders = CFHTTPMessageCopyAllHeaderFields(response) {
